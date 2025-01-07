@@ -8,7 +8,8 @@ export const Search = styled.div`
 
   input {
     flex: 1;
-    min-width: 300px;
+    max-width: 300px;
+    width: 100%;
     height: 35px;
     border-radius: 15px 0 0 15px;
     border: none;
@@ -34,10 +35,19 @@ export const Search = styled.div`
 
 export const HeroSection = styled.section`
   display: flex;
+  flex-direction: column;
   gap: 10px;
   align-items: center;
   justify-content: center;
   padding: 20px;
+`;
+
+export const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 10px;
 `;
 
 export const Filter = styled.div`
@@ -81,5 +91,91 @@ export const DropdownItem = styled.div`
 
   &:hover {
     background: #f0f0f0;
+  }
+`;
+
+export const GridContainer = styled.div`
+  max-width: 1200px;
+  width: 100%;
+  columns: 5;
+  gap: 16px;
+  padding: 20px;
+`;
+
+export const Square = styled.div`
+  margin-top: 5px;
+  border: 5px solid #ccc;
+  width: 30px;
+`
+
+export const StyledImage = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  width: 100%;
+  filter: grayscale(20%);
+  transition: transform 0.3s ease-in-out;
+
+  &:nth-child(1) { height: 100%;  }
+  &:nth-child(2) { height: 150px; }
+  &:nth-child(3) { height: 300px; }
+  &:nth-child(4) { height: 250px; }
+  &:nth-child(5) { height: 350px; }
+`;
+
+export const NameImage = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  text-align: center;
+  opacity: 0; 
+  pointer-events: none; 
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+`;
+
+export const Frame = styled.div`
+  border: 10px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  border-radius: 2px;
+  padding: 10px;
+  background: var(--line-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(0,0,0,0.2) 3px 3px 6px 0px inset, rgba(0,0,0,0.1) -3px -3px 6px 1px inset;
+  overflow: hidden;
+  margin-bottom: 30px;
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:hover div {
+    transform: translateY(0);
+  }
+  &:hover ${NameImage} {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  
+  &:nth-child(1) { height: 200px; }
+  &:nth-child(2) { height: 150px; }
+  &:nth-child(3) { height: 300px; }
+  &:nth-child(4) { height: 250px; }
+  &:nth-child(5) { height: 350px; }
+  &:nth-child(6) { height: 200px; }
+  &:nth-child(7) { height: 150px; }
+  &:nth-child(8) { height: 300px; }
+  &:nth-child(9) { height: 250px; }
+  &:nth-child(10) { height: 350px; }
+
+  &:hover {
+    transform: scale(1.005);
+    box-shadow: rgba(0,0,0,0.2) 3px 3px 6px 0px inset, rgba(0,0,0,0.1) -3px -3px 6px 1px inset, rgba(255, 255, 255, 0.2) 0px 30px 90px;
   }
 `;
