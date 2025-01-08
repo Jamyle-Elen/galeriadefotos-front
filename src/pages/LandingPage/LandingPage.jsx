@@ -7,41 +7,25 @@ import {
   DropdownMenu, 
   DropdownItem, 
   GridContainer,
-  // Arts,
   Frame,
-  // Square,
   StyledImage,
-  NameImage
+  NameImage,
+  NoResults
 } from './LandingPage.styled';
 import NavBar from "../../components/NavBar/NavBar";
 import 'boxicons/css/boxicons.min.css';
 import Footer from '../../components/Footer/Footer';
-
-const images = [
-  { src: 'https://images.unsplash.com/photo-1735946502926-a62b89c6982c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1736144287605-3919f585752c?q=80&w=1891&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1736144287605-3919f585752c?q=80&w=1891&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1735380674308-9e278d784e8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1736144287605-3919f585752c?q=80&w=1891&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1735380674308-9e278d784e8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1735380674308-9e278d784e8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1736148391814-1734e7acf55c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1735380674308-9e278d784e8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1735380674308-9e278d784e8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1736148391814-1734e7acf55c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Dhttps://images.unsplash.com/photo-1736148391814-1734e7acf55c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1736144287605-3919f585752c?q=80&w=1891&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-    { src: 'https://images.unsplash.com/photo-1736148391814-1734e7acf55c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1735380674308-9e278d784e8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1735380674308-9e278d784e8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1736148391814-1734e7acf55c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Dhttps://images.unsplash.com/photo-1736148391814-1734e7acf55c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1736144287605-3919f585752c?q=80&w=1891&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { src: 'https://images.unsplash.com/photo-1735946502926-a62b89c6982c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-];
+import { useEffect } from 'react';
+import api from '../../config/api';
 
 const LandingPage = () => {
   const [selectedColor, setSelectedColor] = useState('');
   const [colorStyle, setColorStyle] = useState({ color: '#ffffff', iconColor: '#ffffff' });
   const [isOpen, setIsOpen] = useState(false);
+  const [photos, setPhotos] = useState([]);
+  const [description, setDescription] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
 
   const handleFilterChange = (color) => {
     setSelectedColor(color);
@@ -58,13 +42,54 @@ const LandingPage = () => {
     }
   };
 
+  const handleSearchQuery = (e) => {
+    setSearchQuery(e.target.value)
+  }
+
+  useEffect(() => {
+    getPhotos()
+  }, [])
+
+  const getPhotos = async () => {
+    try {
+      const response = await api.get('/api/photos');
+        const photosUrls = response.data.map(item => item.urls.regular)
+        setPhotos(photosUrls);
+      const description = response.data.map(item => item.alternative_slugs.pt);
+      setDescription(description)
+        console.log(description)
+
+        console.log(photosUrls);
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  // fitlro das palavras
+  const formatDescription = (description) => {
+    const withoutId = description.split('-').slice(0, -1).join(' ');
+
+    const words = withoutId.split(' ');
+
+    // so pra limitar as palavras finais evitar as "frases inacabadas"
+    if (words[8] && ['em', 'de', 'da', 'se', 'a', 'para'].includes(words[8].toLowerCase())) {
+      return words.slice(0, 8).join(' ');
+    }
+  
+    return words.slice(0, 9).join(' ');
+  };
+
+  const filteredPhotos = photos.filter((photo, index) =>
+    formatDescription(description[index]) ? formatDescription(description[index]).toLowerCase().includes(searchQuery.toLowerCase()) : ''
+  );
+
   return (
     <>
       <NavBar />
       <HeroSection>
         <Container>
           <Search>
-            <input type="text" />
+            <input type="text" value={searchQuery} onChange={handleSearchQuery} placeholder='Buscar imagem'/>
             <button><i className='bx bx-search'></i></button>
           </Search>
           <Filter>
@@ -88,15 +113,20 @@ const LandingPage = () => {
         </Container>
 
         <GridContainer>
-      {images.map((image, index) => (
-        <>
-          <Frame key={index}>
-            <StyledImage src={image.src} alt={`Imagem ${index + 1}`} />
-            <NameImage>Nome test</NameImage>
-          </Frame>
-        </>
-      ))}
-    </GridContainer>
+        {filteredPhotos.length > 0 ? (
+            filteredPhotos.map((photo, index) => (
+              <Frame key={index}>
+                <StyledImage src={photo} alt={`Imagem ${index + 1}`} />
+                <NameImage>{formatDescription(description[index])}</NameImage>
+              </Frame>
+            ))
+          ) : (
+            <NoResults>
+              {/* <img src="https://images.vexels.com/media/users/3/127978/isolated/preview/b5dc5cfbf9438604b6f856fda4abdc93-lupa-desenhada-a-mao.png" alt="" /> */}
+              Nenhuma imagem encontrada
+              </NoResults>
+          )}
+        </GridContainer>
       </HeroSection>
       <Footer />
     </>

@@ -179,3 +179,11 @@ export const Frame = styled.div`
     box-shadow: rgba(0,0,0,0.2) 3px 3px 6px 0px inset, rgba(0,0,0,0.1) -3px -3px 6px 1px inset, rgba(255, 255, 255, 0.2) 0px 30px 90px;
   }
 `;
+
+export const NoResults= styled.div`
+  max-width: 1200px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  height: 340vh; /* GAGA */
+`;
