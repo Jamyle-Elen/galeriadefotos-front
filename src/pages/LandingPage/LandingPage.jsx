@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import { 
-  Search, 
+  Search,
   HeroSection, 
   Container, 
-  Filter, 
-  DropdownMenu, 
-  DropdownItem, 
   GridContainer,
   Frame,
   StyledImage,
@@ -15,148 +14,143 @@ import {
 } from './LandingPage.styled';
 import NavBar from "../../components/NavBar/NavBar";
 import Footer from '../../components/Footer/Footer';
+import LoadingComponentInitial from "../../components/LoadingComponent/LoadingComponent";
 import 'boxicons/css/boxicons.min.css';
 import api from '../../config/api';
+import ResolutionNotAvailable from '../../components/ResolutionNotAvailable/ResolutionNotAvailable';
 
 const LandingPage = () => {
-  const [selectedColor, setSelectedColor] = useState('');
-  const [colorStyle, setColorStyle] = useState({ color: '#ffffff', iconColor: '#ffffff' });
-  const [isOpen, setIsOpen] = useState(false);
   const [photos, setPhotos] = useState([]);
-  const [description, setDescription] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-
-  const handleFilterChange = (color) => {
-    setSelectedColor(color);
-    setIsOpen(false);
-
-    if (color === 'Amarelo') {
-      setColorStyle({ color: 'yellow', iconColor: 'yellow' });
-    } else if (color === 'Branco') {
-      setColorStyle({ color: 'white', iconColor: 'white' });
-    } else if (color === 'Verde') {
-      setColorStyle({ color: 'green', iconColor: 'green' });
-    } else {
-      setColorStyle({ color: '#ffffff', iconColor: '#ffffff' });
-    }
-  };
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchTriggered, setSearchTriggered] = useState(false);
+  const [hasMorePhotos, setHasMorePhotos] = useState(true);
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleSearchQuery = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 3000)
+
+  const handleSearch = () => {
+    setSearchLoading(true);
+    setSearchTriggered(true);
+    setTimeout(() => {
+      setSearchLoading(false);
+    }, 1000);
   };
 
   useEffect(() => {
     getPhotos();
   }, [page]);
 
-  
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      easing: 'ease-out',
+      once: true,
+    });
+  }, []);
+
   const loadMorePhotos = () => {
-    if (!loading) {
+    if (!buttonClicked && !loading) {
+      setButtonClicked(true);
       setLoading(true);
       setPage((prevPage) => prevPage + 1);
     }
   };
-  
-  const getPhotos = async () => {
-    const cachedPhotos = localStorage.getItem('photos');
-    const cachedDescriptions = localStorage.getItem('descriptions');
-  
-    if (cachedPhotos && cachedDescriptions) {
-      setPhotos(JSON.parse(cachedPhotos));
-      setDescription(JSON.parse(cachedDescriptions));
-      setLoading(false);
-    } else {
-      try {
-        const response = await api.get('/api/photos', {
-          params: {
-            page: page,
-            per_page: 30,
-          }
-        });
-  
-        if (response.data.length === 0) {
-          setLoading(false);
-          return;
+
+  const getPhotos = useCallback(async () => {
+    try {
+      const response = await api.get('/api/photos', {
+        params: {
+          page: page,
+          per_page: 10,
         }
-  
-        const newPhotos = response.data.map(item => ({
-          url: item.urls.regular,
-          description: item.alternative_slugs.pt
+      });
+
+      const photosData = response.data.hits;
+
+      if (Array.isArray(photosData)) {
+        const newPhotos = photosData.map(item => ({
+          url: item.webformatURL,
+          description: item.tags
         }));
-  
-        const updatedPhotos = page === 1 ? newPhotos : [...photos, ...newPhotos.filter(item => !photos.some(existing => existing.url === item.url))];
-  
+
+        const updatedPhotos = page === 1 ? newPhotos : [...photos, ...newPhotos];
+
         setPhotos(updatedPhotos);
-  
-        localStorage.setItem('photos', JSON.stringify(updatedPhotos));
-  
-        if (response.data.length < 30) {
-          setLoading(false);
+
+        if (photosData.length < 10) {
+          setHasMorePhotos(false);
         }
-      } catch (error) {
-        console.log(error);
+
         setLoading(false);
+        setButtonClicked(false);
+      } else {
+        console.error("response.data.hits não é um array", response.data.hits);
+        setLoading(false);
+        setButtonClicked(false);
       }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setButtonClicked(false);
     }
-  };
+  }, [page, photos]);
 
-  const formatDescription = (description) => {
-    if (!description) {
-      return '';
-    }
+  const formatDescription = (tags) => {
+    if (!tags) return '';
   
-    const withoutId = description.split('-').slice(0, -1).join(' ');
+    const tagsArray = tags.split(',').map(tag => tag.split(' ')[0]).filter(tag => tag.trim() !== '');
   
-    const words = withoutId.split(' ');
-  
-    if (words[8] && ['em', 'de', 'da', 'se', 'a', 'no', 'por', 'do', 'e', 'para', 'uma', 'um'].includes(words[8].toLowerCase())) {
-      return words.slice(0, 8).join(' ');
-    }
-    
-    return words.slice(0, 9).join(' ');
+    return tagsArray.length > 0 
+      ? tagsArray.map(tag => tag.charAt(0).toUpperCase() + tag.slice(1)).join(', ') 
+      : '';
   };
+  
 
-  const filteredPhotos = photos.filter((photo, index) =>
-    formatDescription(description[index]) ? formatDescription(description[index]).toLowerCase().includes(searchQuery.toLowerCase()) : ''
+  const filteredPhotos = photos.filter((photo) =>
+    formatDescription(photo.description)?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <>
+        <ResolutionNotAvailable/>
       <NavBar />
       <HeroSection>
+      <LoadingComponentInitial isLoading={isLoading} />
         <Container>
           <Search>
-            <input type="text" value={searchQuery} onChange={handleSearchQuery} placeholder='Buscar imagem'/>
-            <button><i className='bx bx-search'></i></button>
+            <input 
+              type="text" 
+              value={searchQuery} 
+              onChange={handleSearchQuery} 
+              placeholder='Buscar imagem'
+              aria-label="Pesquisar imagens"
+            />
+            <button onClick={handleSearch} aria-label="Iniciar busca">
+              <i className='bx bx-search'></i>
+            </button>
           </Search>
-          <Filter>
-            <i
-              className='bx bxs-filter-alt'
-              style={{ color: colorStyle.iconColor }}
-              onClick={() => setIsOpen(!isOpen)}
-            ></i>
-            <span onClick={() => setIsOpen(!isOpen)}>
-              {selectedColor || 'Filtrar'}
-            </span>
-            {isOpen && (
-              <DropdownMenu>
-                <DropdownItem onClick={() => handleFilterChange('Amarelo')}>Amarelo</DropdownItem>
-                <DropdownItem onClick={() => handleFilterChange('Branco')}>Branco</DropdownItem>
-                <DropdownItem onClick={() => handleFilterChange('Verde')}>Verde</DropdownItem>
-                <DropdownItem onClick={() => handleFilterChange('')}>Limpar</DropdownItem>
-              </DropdownMenu>
-            )}
-          </Filter>
         </Container>
-
+        {searchLoading ? <p>Carregando...</p> : (searchTriggered && <p>Resultados encontrados: {filteredPhotos.length}</p>)}
         <GridContainer>
           {filteredPhotos.length > 0 ? (
             filteredPhotos.map((photo, index) => (
-              <Frame key={index}>
-                <StyledImage src={photo} alt={`Imagem ${index + 1}`} />
-                <NameImage>{formatDescription(description[index])}</NameImage>
+              <Frame
+                key={index}
+                className="photo-frame"
+                data-aos="fade-up"
+              >
+                <StyledImage src={photo.url} alt={`Imagem ${index + 1}`} />
+                <NameImage>{formatDescription(photo.description)}</NameImage>
               </Frame>
             ))
           ) : (
@@ -165,9 +159,14 @@ const LandingPage = () => {
             </NoResults>
           )}
         </GridContainer>
-        <ButtonLearnMore onClick={loadMorePhotos} disabled={loading}>
+        {hasMorePhotos && (
+          <ButtonLearnMore 
+            onClick={loadMorePhotos} 
+            disabled={loading || buttonClicked}
+          >
             {loading ? "Carregando..." : "Carregar mais imagens"}
-        </ButtonLearnMore>
+          </ButtonLearnMore>
+        )}
       </HeroSection>
       <Footer />
     </>

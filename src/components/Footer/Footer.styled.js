@@ -7,6 +7,10 @@ export const FooterContainer = styled.footer`
   align-items: center;
   gap: 30px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px -3px 4px, rgba(0, 0, 0, 0.23) 0px -2px 6px;
+
+  @media (max-width: 300px) {
+    display: none;
+  }
 `;
 
 export const FooterContent = styled.section`
