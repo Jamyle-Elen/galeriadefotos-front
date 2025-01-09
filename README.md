@@ -18,6 +18,7 @@ A interface da galeria inclui os seguintes elementos:
 4 - Rodapé (Footer): Exibe informações de copyright, como “© 2025 Galeria de Fotos. Todos os direitos reservados.”
 
 ![Galeria de Fotos](https://github.com/user-attachments/assets/fd864bea-a34d-47fd-bc27-ecd10d0bb9ff)
+[Link do projeto](https://galeriadefotos-five.vercel.app)
 
 <div align="end">
 
