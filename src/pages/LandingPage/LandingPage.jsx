@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Search, 
   HeroSection, 
@@ -10,12 +10,12 @@ import {
   Frame,
   StyledImage,
   NameImage,
-  NoResults
+  NoResults,
+  ButtonLearnMore
 } from './LandingPage.styled';
 import NavBar from "../../components/NavBar/NavBar";
-import 'boxicons/css/boxicons.min.css';
 import Footer from '../../components/Footer/Footer';
-import { useEffect } from 'react';
+import 'boxicons/css/boxicons.min.css';
 import api from '../../config/api';
 
 const LandingPage = () => {
@@ -25,7 +25,8 @@ const LandingPage = () => {
   const [photos, setPhotos] = useState([]);
   const [description, setDescription] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const handleFilterChange = (color) => {
     setSelectedColor(color);
@@ -43,39 +44,77 @@ const LandingPage = () => {
   };
 
   const handleSearchQuery = (e) => {
-    setSearchQuery(e.target.value)
-  }
+    setSearchQuery(e.target.value);
+  };
 
   useEffect(() => {
-    getPhotos()
-  }, [])
+    getPhotos();
+  }, [page]);
 
-  const getPhotos = async () => {
-    try {
-      const response = await api.get('/api/photos');
-        const photosUrls = response.data.map(item => item.urls.regular)
-        setPhotos(photosUrls);
-      const description = response.data.map(item => item.alternative_slugs.pt);
-      setDescription(description)
-        console.log(description)
-
-        console.log(photosUrls);
-    } catch (error) {
-        console.log(error);
+  
+  const loadMorePhotos = () => {
+    if (!loading) {
+      setLoading(true);
+      setPage((prevPage) => prevPage + 1);
     }
-  }
+  };
+  
+  const getPhotos = async () => {
+    const cachedPhotos = localStorage.getItem('photos');
+    const cachedDescriptions = localStorage.getItem('descriptions');
+  
+    if (cachedPhotos && cachedDescriptions) {
+      setPhotos(JSON.parse(cachedPhotos));
+      setDescription(JSON.parse(cachedDescriptions));
+      setLoading(false);
+    } else {
+      try {
+        const response = await api.get('/api/photos', {
+          params: {
+            page: page,
+            per_page: 30,
+          }
+        });
+  
+        if (response.data.length === 0) {
+          setLoading(false);
+          return;
+        }
+  
+        const newPhotos = response.data.map(item => ({
+          url: item.urls.regular,
+          description: item.alternative_slugs.pt
+        }));
+  
+        const updatedPhotos = page === 1 ? newPhotos : [...photos, ...newPhotos.filter(item => !photos.some(existing => existing.url === item.url))];
+  
+        setPhotos(updatedPhotos);
+  
+        localStorage.setItem('photos', JSON.stringify(updatedPhotos));
+  
+        if (response.data.length < 30) {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    }
+  };
 
-  // fitlro das palavras
   const formatDescription = (description) => {
-    const withoutId = description.split('-').slice(0, -1).join(' ');
-
-    const words = withoutId.split(' ');
-
-    // so pra limitar as palavras finais evitar as "frases inacabadas"
-    if (words[8] && ['em', 'de', 'da', 'se', 'a', 'para'].includes(words[8].toLowerCase())) {
-      return words.slice(0, 8).join(' ');
+    if (!description) {
+      return '';
     }
   
+    const withoutId = description.split('-').slice(0, -1).join(' ');
+  
+    const words = withoutId.split(' ');
+  
+    if (words[8] && ['em', 'de', 'da', 'se', 'a', 'no', 'por', 'do', 'e', 'para', 'uma', 'um'].includes(words[8].toLowerCase())) {
+      return words.slice(0, 8).join(' ');
+    }
+    
     return words.slice(0, 9).join(' ');
   };
 
@@ -113,7 +152,7 @@ const LandingPage = () => {
         </Container>
 
         <GridContainer>
-        {filteredPhotos.length > 0 ? (
+          {filteredPhotos.length > 0 ? (
             filteredPhotos.map((photo, index) => (
               <Frame key={index}>
                 <StyledImage src={photo} alt={`Imagem ${index + 1}`} />
@@ -122,11 +161,13 @@ const LandingPage = () => {
             ))
           ) : (
             <NoResults>
-              {/* <img src="https://images.vexels.com/media/users/3/127978/isolated/preview/b5dc5cfbf9438604b6f856fda4abdc93-lupa-desenhada-a-mao.png" alt="" /> */}
               Nenhuma imagem encontrada
-              </NoResults>
+            </NoResults>
           )}
         </GridContainer>
+        <ButtonLearnMore onClick={loadMorePhotos} disabled={loading}>
+            {loading ? "Carregando..." : "Carregar mais imagens"}
+        </ButtonLearnMore>
       </HeroSection>
       <Footer />
     </>

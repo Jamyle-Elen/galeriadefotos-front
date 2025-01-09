@@ -187,3 +187,19 @@ export const NoResults= styled.div`
   justify-content: center;
   height: 340vh; /* GAGA */
 `;
+
+export const ButtonLearnMore = styled.button`
+  height: 50px;
+  max-width: 1170px;
+  background-color: transparent;
+  border: var(--lineButton-color) 1px solid;
+  width: 100%;
+  color: var(--input-color);
+  cursor: pointer;
+  transition: background-color .3s ease-in-out;
+
+  &:hover {
+    background-color: var(--lineButton-color);
+    color: var(--primary-color);
+  }
+`
