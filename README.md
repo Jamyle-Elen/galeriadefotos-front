@@ -19,6 +19,7 @@ A interface da galeria inclui os seguintes elementos:
 ##### 3 - Barra de Busca: Localizada acima da grade de fotos, com um campo de texto e um botão de pesquisa para filtrar as fotos conforme o usuário digita.
 ##### 4 - Rodapé (Footer): Exibe informações de copyright, como “© 2025 Galeria de Fotos. Todos os direitos reservados.”
 
+# `Preview desktop e mobile`
 ![Galeria de Fotos](https://github.com/user-attachments/assets/fd864bea-a34d-47fd-bc27-ecd10d0bb9ff)
 [Link do projeto](https://galeriadefotos-five.vercel.app)
 
