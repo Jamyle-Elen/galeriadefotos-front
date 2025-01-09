@@ -38,41 +38,10 @@ Ao passar o mouse sobre uma foto, um efeito visual é adicionado para tornar a i
 - **Axios**: Usado para realizar requisições HTTP para buscar as fotos da API ou dados estáticos.
 - **Styled Components**: Para estilizar a aplicação e garantir que a galeria tenha um layout responsivo e interativo.
 - **Boxicons**: Para adicionar ícones, como o ícone de lupa para a barra de pesquisa.
+- **API PIXABAY**: Para a busca de imagens.
+- **Express JS**: Para framework web do Node.js.
+- **Node**: Ferramenta para interpretar código JavaScript,.
 
-### ▶ Como Executar o Projeto (Front-End e Back-End) LOCALMENTE
-Para clonar e executar este projeto, siga os passos abaixo:
-1. **Clone os repositórios (front-end e back-end)**:
-   - Front-end:
-     ```bash
-     git clone https://github.com/Jamyle-Elen/galeriadefotos-front
-     ```
-   - Back-end:
-     ```bash
-     git clone https://github.com/Jamyle-Elen/galeriadefotos-back
-     ```
-
-2. **Instale as dependências**:
-   - Acesse as pastas do projeto e instale as dependências para o front-end e back-end:
-     ```bash
-     cd src
-     npm install
-     ```
-     ```bash
-     cd src
-     npm install
-     ```
-
-3. **Execute o front-end**:
-   - Após instalar as dependências, execute o seguinte comando para iniciar o front-end:
-     ```bash
-     npm run dev
-     ```
-
-4. **Execute o back-end**:
-   - Em outra aba do terminal, acesse a pasta do back-end e inicie o servidor:
-     ```bash
-     npm start
-     ```
 ## 🌍 Responsividade
 A aplicação foi projetada para ser totalmente responsiva, adaptando-se a diferentes tamanhos de tela. O layout de grid ajusta-se conforme o tamanho da tela, garantindo uma boa experiência tanto em dispositivos móveis quanto em desktops.
 
