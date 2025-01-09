@@ -6,16 +6,18 @@ A Galeria de Fotos é uma aplicação web desenvolvida para exibir uma coleção
 ## 🚀 Funcionalidades
 Visualização de Fotos: A galeria exibe uma coleção de fotos organizadas em um layout de grid.
 Barra de Busca: Os usuários podem pesquisar por palavras-chave para encontrar fotos específicas, filtrando as imagens de acordo com os títulos.
-Efeito Interativo: Ao passar o mouse sobre uma foto, a imagem ganha um efeito de aumento ou sombra, tornando a navegação mais interativa.
-Responsividade: A aplicação é responsiva, garantindo uma boa visualização em dispositivos de diferentes tamanhos e orientações.
+Efeito Interativo: Ao passar o mouse sobre uma foto, a imagem ganha um efeito de sombra, tornando a navegação mais interativa.
+Responsividade: A aplicação é responsiva, garantindo uma boa visualização em dispositivos de diferentes tamanhos e orientações `chegando até 300px`.
 
 ## 📱 Layout
 A interface da galeria inclui os seguintes elementos:
 
-1 - Cabeçalho (Header): Exibe o título “Galeria de Fotos”.
-2 - Área de Exibição de Fotos: As fotos são exibidas em uma grade (grid), com o nome da foto centralizado abaixo de cada imagem.
-3 - Barra de Busca: Localizada acima da grade de fotos, com um campo de texto e um botão de pesquisa para filtrar as fotos conforme o usuário digita.
-4 - Rodapé (Footer): Exibe informações de copyright, como “© 2025 Galeria de Fotos. Todos os direitos reservados.”
+##### 1 - Cabeçalho (Header): Exibe o título “Galeria de Fotos”.
+##### 2 - Área de Exibição de Fotos: As fotos são organizadas em uma grade (grid), e o nome de cada foto é exibido centralizado abaixo da imagem, com um efeito de destaque ao passar o mouse.
+#####   2.1. Inspiração de Design: O layout foi inspirado em galerias de arte reais, onde a atenção do espectador é direcionada para as obras. O nome da imagem aparece ao passar o mouse, acompanhado de uma leve sombra, que destaca a foto sem desviar o foco da obra em si.
+#####   2.2. Efeito de ScrollReveal: A ideia é exibir o conteúdo de forma gradual, com cada nova foto sendo revelada à medida que o usuário rola a página.
+##### 3 - Barra de Busca: Localizada acima da grade de fotos, com um campo de texto e um botão de pesquisa para filtrar as fotos conforme o usuário digita.
+##### 4 - Rodapé (Footer): Exibe informações de copyright, como “© 2025 Galeria de Fotos. Todos os direitos reservados.”
 
 ![Galeria de Fotos](https://github.com/user-attachments/assets/fd864bea-a34d-47fd-bc27-ecd10d0bb9ff)
 [Link do projeto](https://galeriadefotos-five.vercel.app)
